@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjimalar Tarixi | AI Tarjimon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .history-item {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .lang-badges {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            background: #eef2ff;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .item-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .text-block {
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .source-text {
+            border-left: 4px solid #cbd5e1;
+        }
+
+        .translated-text {
+            background: #f0fdf4;
+            border-left: 4px solid #4ade80;
+            color: #065f46;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 24px;
+            border: 2px dashed var(--border);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--border);
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            color: var(--text-light);
+        }
+
+        @media (min-width: 640px) {
+            .item-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tarjimalar Tarixi</h1>
+            <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Orqaga</a>
+        </header>
+
+        <div class="history-list">
+            {% for item in history %}
+                <div class="history-item">
+                    <div class="item-header">
+                        <div class="lang-badges">
+                            <span class="badge">{{ item.from_lang.code }}</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="badge">{{ item.to_lang.code }}</span>
+                        </div>
+                        <div class="time">
+                            <i class="far fa-clock"></i> {{ item.created_at|date:"d.m.Y H:i" }}
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <div class="text-block source-text">
+                            {{ item.source_text|truncatechars:200 }}
+                        </div>
+                        <div class="text-block translated-text">
+                            {{ item.translated_text|truncatechars:200 }}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-history"></i>
+                    <p>Hozircha hech qanday tarjima tarixi yo'q.</p>
+                    <p style="margin-top: 10px;"><a href="/" style="color: var(--primary); text-decoration: none; font-weight: 600;">Birinchi tarjimani amalga oshiring</a></p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <footer style="margin-top: 40px; text-align: center; color: var(--text-light); font-size: 0.9rem;">
+            <p>&copy; 2026 AI Tarjimon Project</p>
+        </footer>
+    </div>
+</body>
+</html>
